@@ -1,70 +1,71 @@
+require 'pry'
 class TwentyFour
+  attr_accessor :all_expressions
 
-  def self.solve(a)
-    operations = get_sets_of_operations                 #64 sets [["+", "+", "+"], ["+", "+", "-"]...]
-    numbers = get_sets_of_numbers(a)                    #24 sets [[1, 2, 3, 4], [1, 2, 4, 3]...]  
-    make_possible_solutions(numbers, operations)
+  OPERATION_SET = ["+","-","/","*"].repeated_permutation(3).to_a
+
+  def initialize 
+    @all_expressions = []
+  end
+
+  def solve(a)                         
+    make_possible_solutions(get_sets_of_numbers(a))
+
     puts "#{find_solutions.first} = 24"
     puts "I found #{find_solutions.count} solutions."
   end 
 
   private
 
-  def self.get_sets_of_operations
-    set_of_operations = ["+","-","/","*"].repeated_permutation(3).to_a
-  end
-
-  def self.get_sets_of_numbers(a)
-    sets_of_integers = a.permutation(4).to_a
-
-    sets_of_integers.each do |set|
-      set.map!(&:to_f)     #equivalent to set.map!(|num| num.to_f)
+  def get_sets_of_numbers(a)
+    a.permutation(4).to_a.tap do |numbers|
+      numbers.each { |set| set.map!(&:to_f)}
     end
-    sets_of_integers
   end
 
-  def self.make_possible_solutions(nums, ops)
+  def make_possible_solutions(nums)
     expressions = []
 
     nums.each do |num|
-      ops.each do |op|
-        expressions << num.zip(op).flatten.compact
-      end 
+      OPERATION_SET.each {|op| expressions << num.zip(op).flatten.compact}
     end 
-    @all_expressions = []
-    @all_expressions << add_order_of_operations(expressions)  #send expression to order of operations method 
-    @all_expressions
+
+    add_all_possible_order_of_ops(expressions)
   end
 
-  def self.add_order_of_operations(expressions)
-    temp_storage = []  
-    expressions.each do |exp|   
-      temp_storage << exp.dup.insert(0, "(").insert(4, ")") 
-      temp_storage << exp.dup.insert(0, "(").insert(6, ")")
-      temp_storage << exp.dup.insert(2, "(").insert(8, ")")
-      temp_storage << exp.dup.insert(4, "(").insert(8, ")")
-      temp_storage << exp.dup.insert(0, "(").insert(4, ")").insert(6, "(").insert(10, ")") 
+  def add_all_possible_order_of_ops(expressions)
+    all_expressions.tap do |expos|
+      expos << add_order_of_operations(expressions)
     end
-    temp_storage
+  end
+
+  def add_order_of_operations(expressions)
+    [].tap do |temp_storage|  
+      expressions.each do |exp|   
+        temp_storage << exp.dup.insert(0, "(").insert(4, ")") 
+        temp_storage << exp.dup.insert(0, "(").insert(6, ")")
+        temp_storage << exp.dup.insert(2, "(").insert(8, ")")
+        temp_storage << exp.dup.insert(4, "(").insert(8, ")")
+        temp_storage << exp.dup.insert(0, "(").insert(4, ")").insert(6, "(").insert(10, ")") 
+      end
+    end
   end
 
 
-  def self.find_solutions
-    solutions = []
+  def find_solutions
+    [].tap do |solutions|
+      all_expressions.each do |wrapper|
 
-    @all_expressions.each do |wrapper|
-      wrapper.each do |exp|
-        value = eval(exp.join)
-        if value == 24
-          solutions << exp.join(" ")
+        wrapper.each do |exp|
+          value = eval(exp.join)
+          solutions << exp.join(" ") if value == 24
         end
       end
     end
-    solutions
   end
 end
 
-TwentyFour.solve([1,5,6,4])
+TwentyFour.new.solve([1,5,6,4])
 
 # #2, 3, 5, 12
 # #1, 4, 5, 6
