@@ -11,11 +11,11 @@ class TwentyFourSolver
   def solve(a)                         
     make_possible_solutions(get_sets_of_numbers(a))
 
-    puts "#{find_solutions.first} = 24"
-    puts "I found #{find_solutions.count} solutions."
-  end 
+    solutions = find_solutions
 
-  private
+    puts "#{solutions.first} = 24"
+    puts "I found #{solutions.count} solutions."
+  end 
 
   def get_sets_of_numbers(a)
     a.permutation(4).to_a.tap do |numbers|
@@ -65,7 +65,7 @@ class TwentyFourSolver
   end
 end
 
-TwentyFourSolver.new.solve([1,5,6,4])
+# TwentyFourSolver.new.solve([1,5,6,4])
 
 # #2, 3, 5, 12
 # #1, 4, 5, 6
