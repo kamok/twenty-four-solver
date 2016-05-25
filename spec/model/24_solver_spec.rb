@@ -41,6 +41,13 @@ describe TwentyFourSolver do
     end
   end
 
+  # describe '#make_possible_solutions' do
+  #   before(:each) do
+      
+  #   end
+  #   it "calls add_possible_order_of_ops with expressions" do
+  #   end
+  # end
 
 
 
