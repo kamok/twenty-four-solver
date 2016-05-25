@@ -1,5 +1,5 @@
 require 'pry'
-class TwentyFour
+class TwentyFourSolver
   attr_accessor :all_expressions
 
   OPERATION_SET = ["+","-","/","*"].repeated_permutation(3).to_a
@@ -38,7 +38,7 @@ class TwentyFour
       expos << add_order_of_operations(expressions)
     end
   end
-
+ 
   def add_order_of_operations(expressions)
     [].tap do |temp_storage|  
       expressions.each do |exp|   
@@ -65,7 +65,7 @@ class TwentyFour
   end
 end
 
-TwentyFour.new.solve([1,5,6,4])
+TwentyFourSolver.new.solve([1,5,6,4])
 
 # #2, 3, 5, 12
 # #1, 4, 5, 6
