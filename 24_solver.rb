@@ -1,6 +1,6 @@
 require 'pry'
 class TwentyFourSolver
-  attr_accessor :all_expressions
+  attr_accessor :all_expressions, :solutions
 
   OPERATION_SET = ["+","-","/","*"].repeated_permutation(3).to_a
 
@@ -11,7 +11,7 @@ class TwentyFourSolver
   def solve(a)                         
     make_possible_solutions(get_sets_of_numbers(a))
 
-    solutions = find_solutions
+    find_solutions
 
     puts "#{solutions.first} = 24"
     puts "I found #{solutions.count} solutions."
@@ -52,7 +52,8 @@ class TwentyFourSolver
   end
 
   def find_solutions
-    [].tap do |solutions|
+    @solutions = []
+    solutions.tap do |solutions|
       all_expressions.each do |wrapper|
 
         wrapper.each do |exp|
@@ -64,7 +65,7 @@ class TwentyFourSolver
   end
 end
 
-# TwentyFourSolver.new.solve([1,5,6,4])
+TwentyFourSolver.new.solve([1,2,3,4])
 
 # #2, 3, 5, 12
 # #1, 4, 5, 6

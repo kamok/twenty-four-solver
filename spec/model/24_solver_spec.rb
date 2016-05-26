@@ -4,6 +4,9 @@ require '../24-solver/24_solver.rb'
 
 describe TwentyFourSolver do
   let(:solver) { TwentyFourSolver.new }
+  before(:each) do
+    suppress_output
+  end
 
   it "starts with an empty array of all_expressions"do
     expect(solver.all_expressions).to be_an(Array)
@@ -45,20 +48,19 @@ describe TwentyFourSolver do
       @possible_solutions = solver.make_possible_solutions(sets_of_nums)
     end
     it "returns variations of expressions" do
-      @possible_solutions.each do |solution|
-         expect(solution).to include([1.0, "+", "(", 2.0, "/", 3.0, "-", 4.0, ")"],
+      @possible_solutions.each do |possible_solution|
+         expect(possible_solution).to include([1.0, "+", "(", 2.0, "/", 3.0, "-", 4.0, ")"],
                                      ["(", 1.0, "-", 2.0, "+", 3.0, ")", "/", 4.0],
                                      [1.0, "/", "(", 3.0, "-", 4.0, "-", 2.0, ")"])
       end
     end
   end
 
-  #things to know before interview 
-
-  # describe '#get_sets_of_operations' do
-
-  # end
-
-  #input/ output. Human puts in something, computer does thing, then gives me back. 
-
+  describe '#find_solutions' do
+    it "returns solutions for the problem" do
+      solver.solve([1,2,3,4])
+      expect(solver.solutions).to_not be_empty
+      expect(solver.solutions).to include("( 1.0 + 2.0 + 3.0 ) * 4.0", "( 4.0 * 3.0 ) * ( 2.0 * 1.0 )", "4.0 * ( 2.0 + 1.0 + 3.0 )")
+    end
+  end
 end
