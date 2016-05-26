@@ -29,7 +29,7 @@ class TwentyFourSolver
     nums.each do |num|
       OPERATION_SET.each {|op| expressions << num.zip(op).flatten.compact}
     end 
-    
+
     add_all_possible_order_of_ops(expressions)
   end
 

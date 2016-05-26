@@ -1,3 +1,4 @@
+require 'pry'
 require 'spec_helper'
 require '../24-solver/24_solver.rb'
 
@@ -6,13 +7,10 @@ describe TwentyFourSolver do
 
   it "starts with an empty array of all_expressions"do
     expect(solver.all_expressions).to be_an(Array)
+    expect(solver.all_expressions).to be_empty
   end
 
   describe '#solve' do
-    # after(:each) do
-    #   solver.solve([1,2,3,4])
-    # end
-
     it "calls make_possible_solutions with get_sets_of_numbers" do
       expect(solver).to receive(:make_possible_solutions).with(solver.get_sets_of_numbers([1,2,3,4]))
       solver.solve([1,2,3,4])
@@ -21,40 +19,46 @@ describe TwentyFourSolver do
 
   describe '#get_sets_of_numbers' do
     before(:each) do
-      @method_yield = solver.get_sets_of_numbers([1,2,3,4])
+      @sets_of_numbers = solver.get_sets_of_numbers([1,2,3,4])
     end
 
     it "returns an array of 24 arrays" do
-      expect(@method_yield.class).to be(Array)
+      expect(@sets_of_numbers.class).to be(Array)
 
-      expect(@method_yield.count).to be(24)
+      expect(@sets_of_numbers.count).to be(24)
 
-      @method_yield.each do |thing|
+      @sets_of_numbers.each do |thing|
         expect(thing.class).to be(Array)
       end
     end
 
     it "each array it returns comprises of the original input" do
-      @method_yield.each do |array|
-        expect(array) =~ [1,2,3,4]
+      @sets_of_numbers.each do |array|
+        expect(array).to match_array([1,2,3,4])
       end
     end
   end
 
-  # describe '#make_possible_solutions' do
-  #   before(:each) do
-      
-  #   end
-  #   it "calls add_possible_order_of_ops with expressions" do
-  #   end
-  # end
+  describe '#make_possible_solutions' do
+    before(:each) do
+      sets_of_nums = solver.get_sets_of_numbers([1,2,3,4])
+      @possible_solutions = solver.make_possible_solutions(sets_of_nums)
+    end
+    it "returns variations of expressions" do
+      @possible_solutions.each do |solution|
+         expect(solution).to include([1.0, "+", "(", 2.0, "/", 3.0, "-", 4.0, ")"],
+                                     ["(", 1.0, "-", 2.0, "+", 3.0, ")", "/", 4.0],
+                                     [1.0, "/", "(", 3.0, "-", 4.0, "-", 2.0, ")"])
+      end
+    end
+  end
 
-
+  #things to know before interview 
 
   # describe '#get_sets_of_operations' do
 
   # end
 
-  
+  #input/ output. Human puts in something, computer does thing, then gives me back. 
 
 end
