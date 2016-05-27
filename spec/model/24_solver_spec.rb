@@ -13,6 +13,11 @@ describe TwentyFourSolver do
     expect(solver.all_expressions).to be_empty
   end
 
+  it "starts with an empty array of solutions" do
+    expect(solver.solutions).to be_an(Array)
+    expect(solver.solutions).to be_empty
+  end
+
   describe '#solve' do
     it "calls make_possible_solutions with get_sets_of_numbers" do
       expect(solver).to receive(:make_possible_solutions).with(solver.get_sets_of_numbers([1,2,3,4]))

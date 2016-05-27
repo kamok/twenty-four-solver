@@ -6,6 +6,7 @@ class TwentyFourSolver
 
   def initialize 
     @all_expressions = []
+    @solutions = []
   end
 
   def solve(a)                         
@@ -52,7 +53,6 @@ class TwentyFourSolver
   end
 
   def find_solutions
-    @solutions = []
     solutions.tap do |solutions|
       all_expressions.each do |wrapper|
 
